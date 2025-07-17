@@ -1,9 +1,14 @@
-import jwt from "jsonwebtoken";
 import { Request, Response, NextFunction } from "express";
+ import jwt from "jsonwebtoken";
 import { userModel } from "../models/user";
+import { IUser } from "../models/user";
+
+interface AuthRequest extends Request {
+  user?: IUser;
+}
 
 export const authenticate = async (
-  req: Request,
+  req: AuthRequest,
   res: Response,
   next: NextFunction
 ) => {
@@ -18,7 +23,7 @@ export const authenticate = async (
     };
     const user = await userModel.findById(decoded.id).select("-password");
     if (!user) throw new Error();
-    (req as any).user = user;
+    req.user = user;
     next();
   } catch {
     res.status(401).json({ message: "Token invalid or expired" });

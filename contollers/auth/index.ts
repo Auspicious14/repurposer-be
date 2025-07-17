@@ -1,7 +1,12 @@
-import { Request, Response } from "express";
 import argon from "argon2";
+ import { Request, Response } from "express";
 import { generateToken } from "../../utils/generateToken";
 import { userModel } from "../../models/user";
+import { IUser } from "../../models/user";
+
+interface AuthRequest extends Request {
+  user?: IUser;
+}
 
 export const register = async (req: Request, res: Response) => {
   const { firstName, lastName, email, password } = req.body;
@@ -57,6 +62,6 @@ export const login = async (req: Request, res: Response) => {
   });
 };
 
-export const me = async (req: Request, res: Response) => {
-  res.json((req as any).user);
+export const me = async (req: AuthRequest, res: Response) => {
+  res.json(req.user);
 };

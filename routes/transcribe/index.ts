@@ -1,9 +1,9 @@
 import express from "express";
 import { authenticate } from "../../middlewares/auth";
-import { transribe } from "../../contollers/transcribe";
+import { transcribe } from "../../contollers/transcribe";
 
 const router = express.Router();
 
-router.post("/register", authenticate, transribe);
+router.post("/", authenticate, transcribe);
 
 export default router;
