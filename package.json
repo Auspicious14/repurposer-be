@@ -13,10 +13,11 @@
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
-    "jsonwebtoken": "^9.0.0",
+    "argon2": "^0.43.1",
     "cors": "^2.8.5",
     "dotenv": "^17.2.0",
     "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.0",
     "mongoose": "^7.3.0",
     "nodemon": "^3.1.10",
     "openai": "^5.10.1",
