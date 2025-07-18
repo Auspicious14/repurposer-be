@@ -22,6 +22,9 @@ if (!MONGO_URL) {
 app.use(cors());
 app.use(express.json());
 
+app.get("/", (req, res) => {
+  res.send("Hello, World! Backend is running...");
+});
 app.use("/api/auth", authRoutes);
 app.use("/api", transcribeRoutes);
 
