@@ -12,10 +12,10 @@ const app = express();
 dotenv.config();
 
 const PORT = process.env.PORT || 5000;
-const MONGO_URL = process.env.MONGO_URL;
+const MONGO_URL = process.env.MONGODB_URL!;
 
 if (!MONGO_URL) {
-  console.error("FATAL ERROR: MONGO_URL is not defined.");
+  console.error("FATAL ERROR: MONGODB_URL is not defined.");
   process.exit(1);
 }
 

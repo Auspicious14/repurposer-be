@@ -2,14 +2,15 @@
   "name": "repurposer-be",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
-    "build": "tsx",
+    "build": "tsc",
+    "dev": "npx tsx index.ts",
     "start": "npm start",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
+  "author": "Auspicious14",
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
