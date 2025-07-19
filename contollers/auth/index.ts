@@ -42,7 +42,7 @@ export const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
 
   const user = await userModel.findOne({ email });
-  if (!user || !(await argon.verify(password, user.password))) {
+  if (!user || !(await argon.verify( user.password, password))) {
     res.status(401).json({ message: "Invalid credentials" });
     return;
   }
