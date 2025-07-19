@@ -4,6 +4,6 @@ import { transcribe } from "../../contollers/transcribe";
 
 const router = express.Router();
 
-router.post("/", authenticate, transcribe);
+router.post("/transcribe", authenticate, transcribe);
 
 export default router;
