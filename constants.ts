@@ -1,11 +1,11 @@
-export const ALLOWED_TONES = ["friendly", "professional", "humorous", "urgent"];
+export const ALLOWED_TONES = ["Friendly", "Professional", "Humorous", "Urgent", "Witty", "Casual", "Informative", ];
 export const SUPPORTED_PLATFORMS = [
-  "twitter",
-  "linkedin",
-  "thread",
-  "caption",
-  "instagram",
-  "tiktok",
-  "whatsapp",
-  "blog",
+  "Twitter",
+  "X",
+  "Linkedin",
+  "Thread",
+  "Instagram Caption",
+  "Tiktok",
+  "Whatsapp",
+  "Blog Summary",
 ];
