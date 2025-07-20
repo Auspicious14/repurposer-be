@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
- import jwt from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import { userModel } from "../models/user";
 import { IUser } from "../models/user";
 
@@ -14,8 +14,10 @@ export const authenticate = async (
 ) => {
   const token =
     req.cookies?.token || req.headers["authorization"]?.split(" ")[1];
-
-  if (!token) return res.status(401).json({ message: "Unauthorized" });
+  if (!token)
+    return res
+      .status(401)
+      .json({ success: false, message: "Unauthorized... Please Log in" });
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET!) as {
@@ -26,6 +28,8 @@ export const authenticate = async (
     req.user = user;
     next();
   } catch {
-    res.status(401).json({ message: "Token invalid or expired" });
+    res
+      .status(401)
+      .json({ success: false, message: "Token invalid or expired" });
   }
 };
