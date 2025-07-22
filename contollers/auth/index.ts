@@ -1,5 +1,5 @@
 import argon from "argon2";
- import { Request, Response } from "express";
+import { Request, Response } from "express";
 import { generateToken } from "../../utils/generateToken";
 import { userModel } from "../../models/user";
 import { IUser } from "../../models/user";
@@ -42,7 +42,7 @@ export const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
 
   const user = await userModel.findOne({ email });
-  if (!user || !(await argon.verify( user.password, password))) {
+  if (!user || !(await argon.verify(user.password, password))) {
     res.status(401).json({ message: "Invalid credentials" });
     return;
   }
@@ -63,5 +63,5 @@ export const login = async (req: Request, res: Response) => {
 };
 
 export const me = async (req: AuthRequest, res: Response) => {
-  res.json(req.user);
+  res.json({ success: true, data: { user: req.user } });
 };
