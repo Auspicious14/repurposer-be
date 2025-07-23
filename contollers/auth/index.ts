@@ -5,6 +5,7 @@ import { userModel } from "../../models/user";
 import { IUser } from "../../models/user";
 import { generateOTP } from "../../utils/generateOtp";
 import { sendEmail } from "../../middlewares/email";
+import { emailTemplate } from "../../utils/emailTemplate";
 
 interface AuthRequest extends Request {
   user?: IUser;
@@ -82,8 +83,8 @@ export const forgetPassword = async (req: Request, res: Response) => {
     user.resetTokenExpiration = resetTokenExpiration * 60 * 60 * 1000;
     await user.save();
     const resetLink = `${process.env.APP_URL}/reset?token=${resetToken}`;
-    const message = `<div>Dear ${user?.lastName}</div> <br /> <div>Your verification code is ${resetLink}</div><br /> <div>Verification code will expire within 1hr</div>`;
-    sendEmail(user.email, "Requesting Password Reset", JSON.stringify(message));
+    const message = emailTemplate(user, resetLink);
+    sendEmail(user.email, "Requesting Password Reset", message);
 
     res.json({
       success: true,
