@@ -4,6 +4,7 @@ import cors from "cors";
 import mongoose from "mongoose";
 import authRoutes from "./routes/auth/index";
 import transcribeRoutes from "./routes/transcribe/index";
+import templateRoutes from "./routes/templates/index";
 
 dotenv.config();
 
@@ -27,6 +28,7 @@ app.get("/", (req, res) => {
 });
 app.use("/api/auth", authRoutes);
 app.use("/api", transcribeRoutes);
+app.use("/api/templates", templateRoutes)
 
 mongoose
   .connect(MONGO_URL)
