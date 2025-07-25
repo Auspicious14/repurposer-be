@@ -1,9 +1,8 @@
 import { Request, Response } from "express";
 import { templateModel } from "../../models/templates";
+import { AuthRequest } from "../../types/auth"
 
-interface AuthRequest extends Request {
-  user: { id: string };
-}
+
 export const createTemplate = async (req: AuthRequest, res: Response) => {
   try {
     const { name, content, platform } = req.body;
@@ -16,7 +15,6 @@ export const createTemplate = async (req: AuthRequest, res: Response) => {
       return;
     }
 
-    // Check for duplicate template name
     const existingTemplate = await templateModel.findOne({
       name,
       isDeleted: false,
@@ -182,7 +180,6 @@ export const updateTemplate = async (req: AuthRequest, res: Response) => {
       return;
     }
 
-    // Check for name conflicts if name is being updated
     if (name && name !== existingTemplate.name) {
       const nameConflict = await templateModel.findOne({
         name,
