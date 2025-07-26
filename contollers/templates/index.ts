@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { templateModel } from "../../models/templates";
-import { AuthRequest } from "../../types/auth"
-
+import { AuthRequest } from "../../types/auth";
 
 export const createTemplate = async (req: AuthRequest, res: Response) => {
   try {
@@ -17,7 +16,6 @@ export const createTemplate = async (req: AuthRequest, res: Response) => {
 
     const existingTemplate = await templateModel.findOne({
       name,
-      isDeleted: false,
     });
 
     if (existingTemplate) {
@@ -69,7 +67,7 @@ export const getTemplates = async (req: Request, res: Response) => {
     const platform = req.query.platform as string;
     const search = req.query.search as string;
 
-    const query: any = { isDeleted: false };
+    const query: any = {};
 
     if (platform) {
       query.platform = platform;
@@ -89,7 +87,7 @@ export const getTemplates = async (req: Request, res: Response) => {
       .limit(limit)
       .sort({ createdAt: -1 });
 
-    return res.status(200).json({
+    res.status(200).json({
       success: true,
       data: templates,
       pagination: {
@@ -99,12 +97,14 @@ export const getTemplates = async (req: Request, res: Response) => {
         totalPages: Math.ceil(total / limit),
       },
     });
+    return;
   } catch (error) {
     console.error("Template fetch error:", error);
-    return res.status(500).json({
+    res.status(500).json({
       success: false,
       error: "Failed to fetch templates",
     });
+    return;
   }
 };
 
@@ -114,28 +114,30 @@ export const getTemplate = async (req: Request, res: Response) => {
     const { id } = req.params;
 
     if (!id) {
-      return res.status(400).json({
+      res.status(400).json({
         success: false,
         error: "Template ID is required",
       });
+      return;
     }
 
     const template = await templateModel.findOne({
       _id: id,
-      isDeleted: false,
     });
 
     if (!template) {
-      return res.status(404).json({
+      res.status(404).json({
         success: false,
         error: "Template not found",
       });
+      return;
     }
 
-    return res.status(200).json({
+    res.status(200).json({
       success: true,
       data: template,
     });
+    return;
   } catch (error) {
     if (error.name === "CastError") {
       res.status(400).json({
@@ -169,7 +171,6 @@ export const updateTemplate = async (req: AuthRequest, res: Response) => {
     // Check if template exists
     const existingTemplate = await templateModel.findOne({
       _id: id,
-      isDeleted: false,
     });
 
     if (!existingTemplate) {
@@ -184,7 +185,6 @@ export const updateTemplate = async (req: AuthRequest, res: Response) => {
       const nameConflict = await templateModel.findOne({
         name,
         _id: { $ne: id },
-        isDeleted: false,
       });
 
       if (nameConflict) {
@@ -253,7 +253,6 @@ export const deleteTemplate = async (req: AuthRequest, res: Response) => {
 
     const existingTemplate = await templateModel.findOne({
       _id: id,
-      isDeleted: false,
     });
 
     if (!existingTemplate) {
@@ -265,7 +264,6 @@ export const deleteTemplate = async (req: AuthRequest, res: Response) => {
     }
 
     await templateModel.findByIdAndUpdate(id, {
-      isDeleted: true,
       deletedAt: new Date(),
       deletedBy: req.user?.id || "system",
       isActive: false,

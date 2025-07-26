@@ -12,8 +12,8 @@ const router = Router();
 
 router.get("/", authenticate, getTemplates);
 router.get("/:id", authenticate, getTemplate);
-router.post("/", authenticate, createTemplate);
-router.put("/:id", authenticate, updateTemplate);
-router.delete("/:id", authenticate, deleteTemplate);
+router.post("/", authenticate, createTemplate as any);
+router.put("/:id", authenticate, updateTemplate as any);
+router.delete("/:id", authenticate, deleteTemplate as any);
 
-export default router
+export default router;
