@@ -16,6 +16,7 @@ export const createTemplate = async (req: AuthRequest, res: Response) => {
 
     const existingTemplate = await templateModel.findOne({
       name,
+      createdBy: req.user?.id,
     });
 
     if (existingTemplate) {
@@ -108,7 +109,6 @@ export const getTemplates = async (req: Request, res: Response) => {
   }
 };
 
-// Get single template endpoint
 export const getTemplate = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
@@ -168,9 +168,9 @@ export const updateTemplate = async (req: AuthRequest, res: Response) => {
       return;
     }
 
-    // Check if template exists
     const existingTemplate = await templateModel.findOne({
       _id: id,
+      createdBy: req?.user?.id,
     });
 
     if (!existingTemplate) {
@@ -185,6 +185,7 @@ export const updateTemplate = async (req: AuthRequest, res: Response) => {
       const nameConflict = await templateModel.findOne({
         name,
         _id: { $ne: id },
+        // createdBy: re q.user?.id
       });
 
       if (nameConflict) {
@@ -202,8 +203,8 @@ export const updateTemplate = async (req: AuthRequest, res: Response) => {
         ...(name && { name }),
         ...(content && { content }),
         ...(platform && { platform }),
-        updatedAt: new Date(),
-        updatedBy: req.user?.id || "system",
+        // updatedAt: new Date(),
+        // updatedBy: req.user?.id || "system",
       },
       { new: true, runValidators: true }
     );
@@ -253,6 +254,7 @@ export const deleteTemplate = async (req: AuthRequest, res: Response) => {
 
     const existingTemplate = await templateModel.findOne({
       _id: id,
+      createdBy: req.user?.id,
     });
 
     if (!existingTemplate) {
@@ -263,11 +265,11 @@ export const deleteTemplate = async (req: AuthRequest, res: Response) => {
       return;
     }
 
-    await templateModel.findByIdAndUpdate(id, {
-      deletedAt: new Date(),
-      deletedBy: req.user?.id || "system",
-      isActive: false,
-    });
+    // await templateModel.findByIdAndUpdate(id, {
+    //   deletedAt: new Date(),
+    //   deletedBy: req.user?.id || "system",
+    //   isActive: false,
+    // });
 
     res.status(200).json({
       success: true,
