@@ -109,7 +109,7 @@ export const getTemplates = async (req: Request, res: Response) => {
   }
 };
 
-export const getTemplate = async (req: Request, res: Response) => {
+export const getTemplate = async (req: AuthRequest, res: Response) => {
   try {
     const { id } = req.params;
 
@@ -123,6 +123,7 @@ export const getTemplate = async (req: Request, res: Response) => {
 
     const template = await templateModel.findOne({
       _id: id,
+      createdBy: req.user.id,
     });
 
     if (!template) {
