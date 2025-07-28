@@ -1,16 +1,7 @@
-import { OpenAI } from "openai";
 import axios from "axios";
 import { stripFillerWords } from "../utils/filler";
 import { buildPrompt } from "./buildPrompt";
-import dotenv from "dotenv";
-dotenv.config();
-
-const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
-
-const openai = new OpenAI({
-  baseURL: "https://openrouter.ai/api/v1",
-  apiKey: OPENROUTER_API_KEY || "",
-});
+import { openai } from "./aiProvider";
 
 export async function generateWithOpenAI(
   transcript: string,
