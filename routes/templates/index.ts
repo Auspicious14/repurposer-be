@@ -5,15 +5,23 @@ import {
   createTemplate,
   updateTemplate,
   deleteTemplate,
+  previewTemplate,
+  duplicateTemplate
 } from "../../contollers/templates";
 import { authenticate } from "../../middlewares/auth";
 
 const router = Router();
 
-router.get("/", authenticate, getTemplates);
-router.get("/:id", authenticate, getTemplate as any);
-router.post("/", authenticate, createTemplate as any);
-router.put("/:id", authenticate, updateTemplate as any);
-router.delete("/:id", authenticate, deleteTemplate as any);
+router.use(authenticate)
+
+router.post("/", createTemplate as any);
+router.get("/", getTemplates as any);
+router.get("/:id", getTemplate as any);
+router.put("/:id", updateTemplate as any);
+router.delete("/:id", deleteTemplate as any);
+
+router.post("/preview", previewTemplate as any);
+router.post("/:id/duplicate", duplicateTemplate as any);
+
 
 export default router;
