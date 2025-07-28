@@ -8,7 +8,7 @@ import {
   createNotFoundError, 
   createConflictError,
   createInvalidIdError 
-} from "../../utils/templateErrorHandler";
+} from "../../utils/errorHandler";
 
 export const createTemplate = async (req: AuthRequest, res: Response) => {
   try {
