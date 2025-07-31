@@ -400,7 +400,7 @@ export const getContentStats = async (req: AuthRequest, res: Response) => {
 
 // Enhanced transcribe function to include user tracking
 export const transcribeWithHistory = async (req: AuthRequest, res: Response) => {
-  const { transcript, platforms, tone } = req.body;
+  const { transcript, platforms, tone, templateId, templateData} = req.body;
 
   // Your existing validation logic here...
   if (!transcript || !platforms || !tone) {
