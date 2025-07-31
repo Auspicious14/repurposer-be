@@ -73,83 +73,33 @@ export const createTemplate = async (req: AuthRequest, res: Response) => {
 
 export const getTemplates = async (req: AuthRequest, res: Response) => {
   try {
-    const page = Math.max(1, parseInt(req.query.page as string) || 1);
-    const limit = Math.min(
-      100,
-      Math.max(1, parseInt(req.query.limit as string) || 10)
-    );
-    const platform = req.query.platform as string;
-    const search = req.query.search as string;
-    const sortBy = (req.query.sortBy as string) || "createdAt";
-    const sortOrder = (req.query.sortOrder as string) || "desc";
+    const templates = await templateModel
+      .find({ createdBy: req.user?.id })
+      .select("_id name platform content createdAt")
+      .sort({ createdAt: -1 })
+      .lean();
 
-    // Build query
-    const query: any = {
-      createdBy: req.user?.id,
-    };
+    const enhancedTemplates = templates.map((template) => {
+      const placeholders = (template.content.match(/\{\{(\w+)\}\}/g) || []).map(
+        (match) => match.slice(2, -2)
+      );
 
-    if (platform) {
-      const validPlatforms = [
-        "twitter",
-        "linkedin",
-        "instagram",
-        "blog",
-        "email",
-        "facebook",
-        "tiktok",
-      ];
-      if (!validPlatforms.includes(platform.toLowerCase())) {
-        throw createValidationError(
-          "platform",
-          `Invalid platform. Must be one of: ${validPlatforms.join(", ")}`
-        );
-      }
-      query.platform = platform.toLowerCase();
-    }
-
-    if (search?.trim()) {
-      query.$or = [
-        { name: { $regex: search.trim(), $options: "i" } },
-        { content: { $regex: search.trim(), $options: "i" } },
-      ];
-    }
-
-    // Build sort object
-    const sortObj: any = {};
-    const validSortFields = ["name", "platform", "createdAt", "updatedAt"];
-    if (validSortFields.includes(sortBy)) {
-      sortObj[sortBy] = sortOrder === "asc" ? 1 : -1;
-    } else {
-      sortObj.createdAt = -1; // Default sort
-    }
-
-    const [total, templates] = await Promise.all([
-      templateModel.countDocuments(query),
-      templateModel
-        .find(query)
-        .skip((page - 1) * limit)
-        .limit(limit)
-        .sort(sortObj)
-        .select("-__v"),
-    ]);
+      return {
+        ...template,
+        placeholders: [...new Set(placeholders)],
+        placeholderCount: placeholders.length,
+      };
+    });
 
     res.status(200).json({
       success: true,
-      data: templates,
-      pagination: {
-        page,
-        limit,
-        total,
-        totalPages: Math.ceil(total / limit),
-        hasNext: page < Math.ceil(total / limit),
-        hasPrev: page > 1,
-      },
-      message: `Found ${templates.length} template${
-        templates.length !== 1 ? "s" : ""
+      data: enhancedTemplates,
+      message: `Found ${enhancedTemplates.length} template${
+        enhancedTemplates.length !== 1 ? "s" : ""
       }`,
     });
   } catch (error) {
-    handleTemplateError(error, res, "fetch");
+    handleTemplateError(error, res, "templates fetch");
   }
 };
 
