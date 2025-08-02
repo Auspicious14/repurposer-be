@@ -16,13 +16,13 @@ const transcribeSchema = new mongoose.Schema(
       type: String,
       required: true,
       enum: [
-        "casual",
-        "professional",
-        "friendly",
-        "formal",
-        "humorous",
-        "persuasive",
-        "informative",
+        "Casual",
+        "Professional",
+        "Friendly",
+        "Formal",
+        "Humorous",
+        "Persuasive",
+        "Informative",
       ],
     },
 
@@ -32,13 +32,15 @@ const transcribeSchema = new mongoose.Schema(
           type: String,
           required: true,
           enum: [
-            "twitter",
-            "linkedin",
-            "instagram",
-            "blog",
-            "email",
-            "facebook",
-            "tiktok",
+            "Twitter",
+            "LinkedIn",
+            "Instagram Caption",
+            "Blog Summary",
+            "Email",
+            "Facebook",
+            "Thread",
+            "Tiktok",
+            "Whatsapp",
           ],
         },
         content: {
@@ -64,7 +66,6 @@ const transcribeSchema = new mongoose.Schema(
       },
     ],
 
-    // Template integration fields
     templateInfo: {
       templateId: {
         type: mongoose.Schema.Types.ObjectId,
@@ -75,9 +76,9 @@ const transcribeSchema = new mongoose.Schema(
       placeholdersUsed: [String],
       templateData: {
         type: Map,
-        of: String, // Store placeholder values
+        of: String,
       },
-      originalTemplate: String, // Store original template content
+      originalTemplate: String,
     },
 
     isTemplateGenerated: {
@@ -85,7 +86,6 @@ const transcribeSchema = new mongoose.Schema(
       default: false,
     },
 
-    // User tracking
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "user",

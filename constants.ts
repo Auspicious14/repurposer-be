@@ -5,7 +5,7 @@ export const ALLOWED_TONES = [
   "Professional",
   "Humorous",
   "Urgent",
-  "Witty",
+  "Persuasive",
   "Casual",
   "Informative",
 ];
@@ -19,6 +19,7 @@ export const SUPPORTED_PLATFORMS = [
   "Whatsapp",
   "Blog Summary",
   "Youtube Description",
+  "Email",
 ];
 
 export const TONE_PROMPTS: TonePrompts = {
