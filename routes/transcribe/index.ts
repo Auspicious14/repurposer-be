@@ -11,7 +11,7 @@ import {
 
 const router = express.Router();
 
-router.post("/transcribe", authenticate, transcribe as any);
+router.post("/repurpose", authenticate, transcribe as any);
 router.get("/history", authenticate, getContentHistory as any);
 router.get("/history/:id", authenticate, getContentById as any);
 router.get("/history/stats", authenticate, getContentStats as any);
